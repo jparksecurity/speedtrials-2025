@@ -60,7 +60,7 @@ export default function FindPwsScreen() {
       <ThemedView style={styles.content}>
         <ThemedText style={styles.title}>Find Your Public Water System</ThemedText>
         <ThemedText style={styles.subtitle}>
-          Choose how you'd like to find information about your public water system
+          Choose how you&apos;d like to find information about your public water system
         </ThemedText>
         
         <ThemedView style={styles.buttonContainer}>

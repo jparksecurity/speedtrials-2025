@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useWaterSafety, SafetyLevel } from '@/hooks/useWaterSafety';
 
 interface PwsResult {
   pwsid: string;
@@ -15,9 +16,37 @@ interface ResultCardProps {
   result: PwsResult;
 }
 
+const getSafetyColors = (level: SafetyLevel | undefined, isDark: boolean) => {
+  if (!level) return { backgroundColor: isDark ? '#444' : '#E5E5E7', textColor: isDark ? '#FFF' : '#000' };
+  
+  switch (level) {
+    case 'GREEN':
+      return { backgroundColor: '#10B981', textColor: 'white' };
+    case 'AMBER':
+      return { backgroundColor: '#F59E0B', textColor: 'white' };
+    case 'RED':
+      return { backgroundColor: '#EF4444', textColor: 'white' };
+    default:
+      return { backgroundColor: isDark ? '#444' : '#E5E5E7', textColor: isDark ? '#FFF' : '#000' };
+  }
+};
+
+const getSafetyText = (level: SafetyLevel | undefined) => {
+  switch (level) {
+    case 'GREEN': return 'Safe';
+    case 'AMBER': return 'Caution';
+    case 'RED': return 'Unsafe';
+    default: return 'No Data';
+  }
+};
+
 export function ResultCard({ result }: ResultCardProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { safetyLevel, isLoading } = useWaterSafety(result.pwsid);
+  
+  const safetyColors = getSafetyColors(safetyLevel, isDark);
+  const safetyText = getSafetyText(safetyLevel);
 
   return (
     <ThemedView style={[
@@ -46,6 +75,18 @@ export function ResultCard({ result }: ResultCardProps) {
           { backgroundColor: isDark ? '#007AFF' : '#007AFF' }
         ]}>
           <ThemedText style={styles.chipText}>{result.primacyAgency}</ThemedText>
+        </View>
+      </View>
+      
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>Safety Status:</ThemedText>
+        <View style={[
+          styles.chip,
+          { backgroundColor: safetyColors.backgroundColor }
+        ]}>
+          <ThemedText style={[styles.chipText, { color: safetyColors.textColor }]}>
+            {isLoading ? 'Loading...' : safetyText}
+          </ThemedText>
         </View>
       </View>
     </ThemedView>
