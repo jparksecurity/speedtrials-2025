@@ -1,12 +1,20 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { PrimaryButton } from '@/components/ui/PrimaryButton';
 
 export default function HomeScreen() {
+  const router = useRouter();
+  
+  const handleFindPws = () => {
+    router.push('/find-pws' as any);
+  };
+  
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -42,14 +50,13 @@ export default function HomeScreen() {
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText type="subtitle">Find Your Public Water System</ThemedText>
         <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          Discover information about your local public water system by location or address.
         </ThemedText>
+        <ThemedView style={styles.buttonContainer}>
+          <PrimaryButton title="Find My PWS" onPress={handleFindPws} />
+        </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -71,5 +78,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  buttonContainer: {
+    marginTop: 16,
+    alignItems: 'center',
   },
 });
