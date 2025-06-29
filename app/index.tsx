@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 60,
+    paddingTop: 20,
   },
   header: {
     marginBottom: 40,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     marginBottom: 8,
-    fontFamily: 'SpaceMono',
+    display: 'none',
   },
   subtitle: {
     fontSize: 18,

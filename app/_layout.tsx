@@ -36,20 +36,24 @@ export default function RootLayout() {
                   name="index" 
                   options={{ 
                     title: 'ClearTap',
-                    headerShown: false 
+                    headerShown: true,
+                    headerTitleStyle: {
+                      fontWeight: '700',
+                      fontSize: 18,
+                    },
+                    headerStyle: {
+                      backgroundColor: 'transparent',
+                    },
                   }} 
                 />
                 <Stack.Screen 
                   name="result" 
                   options={{ 
-                    title: 'Water Quality' 
-                  }} 
-                />
-                <Stack.Screen 
-                  name="detail" 
-                  options={{ 
-                    presentation: 'modal', 
-                    headerShown: false 
+                    title: 'Water Quality',
+                    headerBackTitle: 'Back',
+                    headerTitleStyle: {
+                      fontWeight: '600',
+                    },
                   }} 
                 />
               </Stack>

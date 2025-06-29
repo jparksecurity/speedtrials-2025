@@ -1,19 +1,22 @@
 import React from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams, useRouter, useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { VerdictCard } from '@/components/ui/VerdictCard';
 import { ErrorCard } from '@/components/ui/ErrorCard';
+import { DetailBottomSheet } from '@/components/ui/DetailBottomSheet';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { useGeocode } from '@/hooks/useGeocode';
 import { usePwsLookup } from '@/hooks/usePwsLookup';
 import { useWaterSafety } from '@/hooks/useWaterSafety';
 
 export default function ResultScreen() {
-  const router = useRouter();
   const navigation = useNavigation();
+  const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
+  
   const params = useLocalSearchParams<{
     address?: string;
     lat?: string;
@@ -57,14 +60,7 @@ export default function ResultScreen() {
 
   const handleCardPress = () => {
     if (pwsQuery.data && safetyQuery.safetyLevel) {
-      router.push({
-        pathname: '/detail' as any,
-        params: {
-          pwsid: pwsQuery.data.pwsid,
-          utilityName: pwsQuery.data.name,
-          safetyLevel: safetyQuery.safetyLevel,
-        },
-      });
+      bottomSheetModalRef.current?.present();
     }
   };
 
@@ -127,6 +123,16 @@ export default function ResultScreen() {
           </ThemedView>
         )}
       </ScrollView>
+
+      {/* Bottom Sheet Modal */}
+      {pwsQuery.data && safetyQuery.safetyLevel && (
+        <DetailBottomSheet
+          ref={bottomSheetModalRef}
+          pwsid={pwsQuery.data.pwsid}
+          utilityName={pwsQuery.data.name}
+          safetyLevel={safetyQuery.safetyLevel}
+        />
+      )}
     </ThemedView>
   );
 }
